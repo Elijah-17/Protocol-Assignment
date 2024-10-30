@@ -1,0 +1,101 @@
+const int sensors[5] = {A0, A1, A2, A3, A4}; // Analog pins for reading photoresistors (for binary LEDs)
+const int shiftsens = A5; // Photoresistor for shift LED
+const int specialsens = A6; // Photoresistor for special LED
+const int clocksens = A7; // Photoresistor for clock light
+String receivedMessage = ""; // Store the decoded message
+
+void setup() {
+  Serial.begin(9600); // Initialize serial communication
+  while (!Serial);    // Wait for serial connection to initialize
+  Serial.println("Receiver Ready");
+  pinMode(clocksens, INPUT); // Clock light input
+}
+
+void loop() {
+  // int clockValue=analogRead(clocksens);
+  // Serial.print("clock value: ");
+  // Serial.println(clockValue);
+
+  // Check if the clock light photoresistor goes high
+  if (analogRead(clocksens) > 750) { // Adjust threshold if needed
+    // Read photoresistors to get the binary representation of the character
+    int binaryValue = 0;
+    for (int i = 0; i < 5; i++) {
+      if (analogRead(sensors[i]) > 700) { // Adjust threshold
+        binaryValue |= (1 << i); // Set bit i in binaryValue
+      }
+}
+// Serial.print("binary of number is: ");
+//Serial.println(binaryValue);
+delay(2);//lessen if transmitter led's are on for less time Used to be (must be a little less than transmitter clock high delay) 8
+//Serial.print(receivedMessage);
+
+//decoding message
+    // check if shift or special light is on
+    bool isShift = analogRead(shiftsens) > 750; // Shift if high
+    bool isSpecial = analogRead(specialsens) > 750; // Special if high
+//empty  string for decoding each binary value to letter and number
+char decodedChar = ' ';//
+
+  if (isSpecial) {
+      decodedChar = decodeSpecialCharacter(binaryValue); // passes 'binaryValue' into special charecter decoder fcn
+    } else{
+      decodedChar = decodeAlphaCharacter(binaryValue, isShift);//passes 'binaryValue' into letter decoding fcn
+    }
+//add decodedChar to total message
+receivedMessage += decodedChar;
+
+if(binaryValue == 31 && isShift && isSpecial){
+  Serial.print("Received Message Hopefully: ");
+  Serial.println(receivedMessage);
+  receivedMessage = "";
+  delay(5);
+}
+
+
+
+
+// delay(10000);//This is for testing, For actual use, should be (12)
+  }
+
+}
+
+//Decoding Functions (where the magic happens!!) :) ;)
+
+
+char decodeSpecialCharacter(int binaryValue) {
+  if(binaryValue <=73){
+    int x = binaryValue - 64;
+  //    //binaryValue -= 64;
+    return 'x'; //-= 64;
+   }
+  switch (binaryValue) {
+    case 10: return '+'; 
+    case 11: return '-';
+    case 12: return '*';
+    case 13: return '/';
+    case 14: return '=';
+    case 15: return ':';
+    case 16: return '.'; 
+    case 17: return ',';
+    case 18: return '?';
+    case 19: return '!';
+    //case 20: return ''';
+    case 21: return '(';
+    case 22: return ')';
+    case 23: return '$';
+    case 24: return ';';
+    case 25: return '@';
+    case 26: return '#';
+    case 27: return '~';
+    default: return ' ';
+  }
+}
+
+// Function to decode alphabetic characters (lowercase or uppercase)
+char decodeAlphaCharacter(int binaryValue, bool isShift) {
+  if (binaryValue >= 1 && binaryValue <= 26) {
+    return (isShift ? 'A' : 'a') + binaryValue - 1;//-1
+  }
+  return ' '; // Default if out of range
+}
