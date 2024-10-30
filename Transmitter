@@ -1,0 +1,135 @@
+const int ledPins[5] = {2, 3, 4, 5, 6}; // Pins for LEDs (1-5 for binary, 6 for shift)
+const int shiftPin = 7;
+const int special = 8;
+const int clockPin = 9; // Pin for the clock light
+String inputString;    // variable to store the input string
+int n = 0;             // position index in the string
+char currentLetter;    // variable to store the current character
+int shift = 0;         // variable to indicate uppercase (1) or lowercase (0)
+int specialChar = 0;  //variable to indicare number or special charecter
+
+#include <ctype.h>
+
+
+void setup() {
+  Serial.begin(9600);  // initialize serial communication
+  while (!Serial);     // wait for the serial connection to initialize
+
+
+  // Set LED pins and clock pin as outputs
+  for (int i = 0; i < 5; i++) {
+    pinMode(ledPins[i], OUTPUT);
+    digitalWrite(ledPins[i], LOW);
+  }
+  pinMode(clockPin, OUTPUT);
+  pinMode(shiftPin, OUTPUT);
+  pinMode(special, OUTPUT);
+  digitalWrite(shiftPin, LOW);
+  digitalWrite(clockPin, LOW);
+  digitalWrite(special, LOW);
+  Serial.println("Serial Connection Passed, ");
+  Serial.println("Enter Message to Transmit");
+  }
+
+
+void loop(){
+ if(Serial.available()){//check if serial is available
+  inputString = Serial.readString();//read text string and store as input string
+  Serial.print("Message Recieved as: ");
+  Serial.println(inputString);
+
+    //loop thru string at n
+    for (n = 0; n < (inputString.length()-1); n++) {//length()-1
+      currentLetter = inputString.charAt(n); // get the character at position n
+
+
+      //Serial.println(currentLetter);
+
+      shift = 0;
+      specialChar = 0;
+      int letterNumber =0;
+
+      if (isalpha(currentLetter)) {
+        // Handle letters
+        if (islower(currentLetter)) {
+          letterNumber = currentLetter - 'a' + 1;
+        } else {
+          letterNumber = currentLetter - 'A' + 1;
+          shift = 1; // Set shift for uppercase letters
+        }
+      } else if (isdigit(currentLetter)) {
+        // Handle numbers (1-9) based on your provided table
+        letterNumber = currentLetter - '0' + 64; // Maps '1' to 65, '2' to 66, etc.
+        specialChar = 1;
+      } else {
+        // Handle special characters
+        switch (currentLetter) {
+          case '+': letterNumber = 74; specialChar = 1; break;
+          case '-': letterNumber = 75; specialChar = 1; break;
+          case '*': letterNumber = 76; specialChar = 1; break;
+          case '/': letterNumber = 77; specialChar = 1; break;
+          case '=': letterNumber = 78; specialChar = 1; break;
+          case ':': letterNumber = 79; specialChar = 1; break;
+          case '.': letterNumber = 80; specialChar = 1; break;
+          case ',': letterNumber = 81; specialChar = 1; break;
+          case '?': letterNumber = 82; specialChar = 1; break;
+          case '!': letterNumber = 83; specialChar = 1; break;
+          //case ''': letterNumber = 84; specialChar = 1; break;
+          case '(': letterNumber = 85; specialChar = 1; break;
+          case ')': letterNumber = 86; specialChar = 1; break;
+          case '$': letterNumber = 87; specialChar = 1; break;
+          case ';': letterNumber = 88; specialChar = 1; break;
+          case '@': letterNumber = 89; specialChar = 1; break;
+          case '#': letterNumber = 90; specialChar = 1; break;
+          case '~': letterNumber = 91; specialChar = 1; break;
+          case ' ': letterNumber = 0; break; // Space, all LEDs off
+          default: letterNumber = 0; break; // For unsupported characters
+        }
+      }
+        //set led's according to binary number
+      for (int i = 0; i < 5; i++) {
+        digitalWrite(ledPins[i], (letterNumber >> i) & 1); // Shift and mask each bit
+      }
+      digitalWrite(shiftPin, shift);
+      digitalWrite(special, specialChar);
+
+
+      delay(15);//TESTING ONLY, SET TO (15)//between digits//////////////////////////////////////
+      digitalWrite(clockPin, HIGH); // Turn on the clock light
+      delay(1);                 // Keep it on for 100 ms (Works 10)
+      digitalWrite(clockPin, LOW);
+      delay(1); //works at 10
+
+    // Reset LEDs for next character
+      digitalWrite(shiftPin, LOW);
+      digitalWrite(special, LOW);
+      for (int i = 0; i < 5; i++) {
+        digitalWrite(ledPins[i], LOW);
+      }
+      delay(10);// was 10
+    } //end of string[n] loop
+      // 'n' is at the end of the string, no more letters left to display. 
+     // End-of-message indicator: All LEDs on for a clock flash
+    for (int i = 0; i < 5; i++) {
+      digitalWrite(ledPins[i], HIGH);
+    }
+    digitalWrite(shiftPin, HIGH);
+    digitalWrite(special, HIGH);
+
+    delay(100); // TESTING ONLY, SET TO 10
+    digitalWrite(clockPin, HIGH);
+    delay(2);
+    digitalWrite(clockPin, LOW);
+    delay(2);
+
+    // Reset all LEDs
+    for (int i = 0; i < 5; i++) {
+      digitalWrite(ledPins[i], LOW);
+    }
+    digitalWrite(shiftPin, LOW);
+    digitalWrite(special, LOW);
+
+    n = 0;
+    Serial.println("Transmission Complete, Enter New Message");
+  }
+} // End of loop if serial is true
