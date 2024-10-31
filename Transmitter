@@ -82,6 +82,17 @@ void loop(){
           case '@': letterNumber = 89; specialChar = 1; break;
           case '#': letterNumber = 90; specialChar = 1; break;
           case '~': letterNumber = 91; specialChar = 1; break;
+          case '%': letterNumber = 92; specialChar = 1; break;
+          case '^': letterNumber = 93; specialChar = 1; break;
+          case '&': letterNumber = 94; specialChar = 1; break;
+          case '[': letterNumber = 95; specialChar = 1; break;
+          case ']': letterNumber = 96; specialChar = 1; break;
+          case '{': letterNumber = 97; specialChar = 1; break;
+          case '}': letterNumber = 98; specialChar = 1; break;
+          case '<': letterNumber = 99; specialChar = 1; break;
+          case '>': letterNumber = 100; specialChar = 1; break;
+          case '_': letterNumber = 101; specialChar = 1; break;
+
           case ' ': letterNumber = 0; break; // Space, all LEDs off
           default: letterNumber = 0; break; // For unsupported characters
         }
