@@ -39,7 +39,7 @@ void loop(){
   Serial.println(inputString);
 
     //loop thru string at n
-    for (n = 0; n < (inputString.length()-1); n++) {//length()-1
+    for (n = 0; n < (inputString.length()); n++) {//length()-1
       currentLetter = inputString.charAt(n); // get the character at position n
 
 
@@ -74,7 +74,7 @@ void loop(){
           case ',': letterNumber = 81; specialChar = 1; break;
           case '?': letterNumber = 82; specialChar = 1; break;
           case '!': letterNumber = 83; specialChar = 1; break;
-          //case ''': letterNumber = 84; specialChar = 1; break;
+          case '\'': letterNumber = 84; specialChar = 1; break;
           case '(': letterNumber = 85; specialChar = 1; break;
           case ')': letterNumber = 86; specialChar = 1; break;
           case '$': letterNumber = 87; specialChar = 1; break;
