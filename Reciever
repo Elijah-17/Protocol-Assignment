@@ -17,11 +17,11 @@ void loop() {
   // Serial.println(clockValue);
 
   // Check if the clock light photoresistor goes high
-  if (analogRead(clocksens) > 750) { // Adjust threshold if needed
+  if (analogRead(clocksens) > 850) { // Adjust threshold if needed
     // Read photoresistors to get the binary representation of the character
     int binaryValue = 0;
     for (int i = 0; i < 5; i++) {
-      if (analogRead(sensors[i]) > 700) { // Adjust threshold
+      if (analogRead(sensors[i]) > 850) { // Adjust threshold
         binaryValue |= (1 << i); // Set bit i in binaryValue
       }
 }
@@ -73,7 +73,7 @@ char decodeSpecialCharacter(int binaryValue) {
     case 4: return '4';
     case 5: return '5';
     case 6: return '6';
-    case 7: return '8';
+    case 7: return '7';
     case 8: return '8';
     case 9: return '9';
     case 10: return '+'; 
@@ -86,7 +86,7 @@ char decodeSpecialCharacter(int binaryValue) {
     case 17: return ',';
     case 18: return '?';
     case 19: return '!';
-    //case 20: return ''';
+    case 20: return '\'';
     case 21: return '(';
     case 22: return ')';
     case 23: return '$';
@@ -94,6 +94,16 @@ char decodeSpecialCharacter(int binaryValue) {
     case 25: return '@';
     case 26: return '#';
     case 27: return '~';
+    case 28: return '%';
+    case 29: return '^';
+    case 30: return '&';
+    case 31: return '[';
+    case 32: return ']';
+    case 33: return '{';
+    case 34: return '}';
+    case 35: return '<';
+    case 36: return '>';
+    case 37: return '_';
     default: return ' ';
   }
 }
