@@ -17,7 +17,7 @@ void loop() {
   // Serial.println(clockValue);
 
   // Check if the clock light photoresistor goes high
-  if (analogRead(clocksens) > 800) { // Adjust threshold if needed
+  if (analogRead(clocksens) > 770) { // Adjust threshold if needed
     // Read photoresistors to get the binary representation of the character
     int binaryValue = 0;
     for (int i = 0; i < 5; i++) {
@@ -31,15 +31,15 @@ void loop() {
 //Serial.println(binaryValue);/////////////////////////////////////////////////////////////Used For Testing Purposes. 
 
 
-delay(2);//lessen if transmitter led's are on for less time Used to be (must be a little less than transmitter clock high delay) 8
 //Serial.print(receivedMessage);
 
 //decoding message
     // check if shift or special light is on
-    bool isShift = analogRead(shiftsens) > 750; // Shift if high
+    bool isShift = analogRead(shiftsens) > 650; // Shift if high
     bool isSpecial = analogRead(specialsens) > 750; // Special if high
 //empty  string for decoding each binary value to letter and number
 char decodedChar = ' ';//
+//lessen if transmitter led's are on for less time Used to be (must be a little less than transmitter clock high delay) 8
 
   if (isSpecial) {
       decodedChar = decodeSpecialCharacter(binaryValue, isShift); // passes 'binaryValue' into special charecter decoder fcn
@@ -48,6 +48,7 @@ char decodedChar = ' ';//
     }
 //add decodedChar to total message
 receivedMessage += decodedChar;
+delay(5);
 
 if(binaryValue == 31 && isShift && isSpecial){
   Serial.print("Received Message Hopefully: ");
@@ -69,7 +70,6 @@ if(binaryValue == 31 && isShift && isSpecial){
 
 char decodeSpecialCharacter(int binaryValue, bool isShift) {
   if (isShift) {
-    Serial.println("special+Shift");
     switch (binaryValue) {
       case 1: return '[';//32
       case 2: return ']';
@@ -78,6 +78,10 @@ char decodeSpecialCharacter(int binaryValue, bool isShift) {
       case 5: return '<';
       case 6: return '>';//37
       case 7: return '_';
+      case 8: return '"';
+      case 9: return '|';
+      case 10: return '`';
+
       default: return ' ';
     }
   } else {
