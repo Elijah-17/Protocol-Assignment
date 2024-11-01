@@ -58,7 +58,7 @@ void loop(){
           shift = 1; // Set shift for uppercase letters
         }
       } else if (isdigit(currentLetter)) {
-        // Handle numbers (1-9) based on your provided table
+        // Handle numbers 1-9 
         letterNumber = currentLetter - '0' + 64; // Maps '1' to 65, '2' to 66, etc.
         specialChar = 1;
       } else {
@@ -70,7 +70,7 @@ void loop(){
           case '/': letterNumber = 77; specialChar = 1; break;
           case '=': letterNumber = 78; specialChar = 1; break;
           case ':': letterNumber = 79; specialChar = 1; break;
-          case '.': letterNumber = 80; specialChar = 1; break;
+          case '.': letterNumber = 80; specialChar = 1; break;//reciever display 16
           case ',': letterNumber = 81; specialChar = 1; break;
           case '?': letterNumber = 82; specialChar = 1; break;
           case '!': letterNumber = 83; specialChar = 1; break;
@@ -84,15 +84,15 @@ void loop(){
           case '~': letterNumber = 91; specialChar = 1; break;
           case '%': letterNumber = 92; specialChar = 1; break;
           case '^': letterNumber = 93; specialChar = 1; break;
-          case '&': letterNumber = 94; specialChar = 1; break;
+          case '&': letterNumber = 94; specialChar = 1; break;//receiver display 30
           //DO NOT PUT ANYTHING AS 95
-          case '[': letterNumber = 96; specialChar = 1; shift = 1; break;
-          case ']': letterNumber = 97; specialChar = 1; shift = 1; break;
-          case '{': letterNumber = 98; specialChar = 1; shift = 1; break;
-          case '}': letterNumber = 99; specialChar = 1; shift = 1; break;
-          case '<': letterNumber = 100; specialChar = 1; shift = 1; break;
-          case '>': letterNumber = 101; specialChar = 1; shift = 1; break;
-          case '_': letterNumber = 102; specialChar = 1; shift = 1; break;
+          case '[': letterNumber = 97; specialChar = 1; shift = 1; break;//101
+          case ']': letterNumber = 98; specialChar = 1; shift = 1; break;//102
+          case '{': letterNumber = 99; specialChar = 1; shift = 1; break;//103
+          case '}': letterNumber = 100; specialChar = 1; shift = 1; break;//104
+          case '<': letterNumber = 101; specialChar = 1; shift = 1; break;//105
+          case '>': letterNumber = 102; specialChar = 1; shift = 1; break;//106
+          case '_': letterNumber = 103; specialChar = 1; shift = 1; break;//107
 
           case ' ': letterNumber = 0; break; // Space, all LEDs off
           default: letterNumber = 0; break; // For unsupported characters
@@ -104,6 +104,7 @@ void loop(){
       }
       digitalWrite(shiftPin, shift);
       digitalWrite(special, specialChar);
+      Serial.print(shift);
 
 
       delay(15);//TESTING ONLY, SET TO (15)//between digits//////////////////////////////////////
