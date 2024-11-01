@@ -38,7 +38,7 @@ delay(2);//lessen if transmitter led's are on for less time Used to be (must be 
 char decodedChar = ' ';//
 
   if (isSpecial) {
-      decodedChar = decodeSpecialCharacter(binaryValue); // passes 'binaryValue' into special charecter decoder fcn
+      decodedChar = decodeSpecialCharacter(binaryValue, isShift); // passes 'binaryValue' into special charecter decoder fcn
     } else{
       decodedChar = decodeAlphaCharacter(binaryValue, isShift);//passes 'binaryValue' into letter decoding fcn
     }
@@ -63,9 +63,20 @@ if(binaryValue == 31 && isShift && isSpecial){
 //Decoding Functions (where the magic happens!!) :) ;)
 
 
-char decodeSpecialCharacter(int binaryValue) {
-  switch (binaryValue) {
-
+char decodeSpecialCharacter(int binaryValue, bool isShift) {
+  if (isShift) {
+    switch (binaryValue) {
+      case 32: return '[';
+      case 33: return ']';
+      case 34: return '{';
+      case 35: return '}';
+      case 36: return '<';
+      case 37: return '>';
+      case 38: return '_';
+      default: return ' ';
+    }
+  } else {
+    switch (binaryValue) {
     case 0: return '0';
     case 1: return '1';
     case 2: return '2';
@@ -98,16 +109,8 @@ char decodeSpecialCharacter(int binaryValue) {
     case 29: return '^';
     case 30: return '&';
     //DO NOT FUCKING DARE PUT 31
-if(shift == 1){
-    case 32: return '[';
-    case 33: return ']';
-    case 34: return '{';
-    case 35: return '}';
-    case 36: return '<';
-    case 37: return '>';
-    case 38: return '_';
-    default: return ' ';
 }
+
   }
 }
 
