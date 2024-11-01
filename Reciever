@@ -98,6 +98,7 @@ char decodeSpecialCharacter(int binaryValue) {
     case 29: return '^';
     case 30: return '&';
     //DO NOT FUCKING DARE PUT 31
+if(shift == 1){
     case 32: return '[';
     case 33: return ']';
     case 34: return '{';
@@ -106,6 +107,7 @@ char decodeSpecialCharacter(int binaryValue) {
     case 37: return '>';
     case 38: return '_';
     default: return ' ';
+}
   }
 }
 
