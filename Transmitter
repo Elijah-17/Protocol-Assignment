@@ -93,6 +93,9 @@ void loop(){
           case '<': letterNumber = 101; specialChar = 1; shift = 1; break;//105
           case '>': letterNumber = 102; specialChar = 1; shift = 1; break;//106
           case '_': letterNumber = 103; specialChar = 1; shift = 1; break;//107
+          case '"': letterNumber = 104; specialChar = 1; shift = 1; break;
+          case '|': letterNumber = 105; specialChar = 1; shift = 1; break;
+          case '`': letterNumber = 106; specialChar = 1; shift = 1; break;
 
           case ' ': letterNumber = 0; break; // Space, all LEDs off
           default: letterNumber = 0; break; // For unsupported characters
@@ -104,25 +107,25 @@ void loop(){
       }
       digitalWrite(shiftPin, shift);
       digitalWrite(special, specialChar);
-      Serial.print(shift);
 
-
-      delay(15);//TESTING ONLY, SET TO (15)//between digits//////////////////////////////////////
+      delay(7.25);//10
       digitalWrite(clockPin, HIGH); // Turn on the clock light
       delay(1);                 // Keep it on for 100 ms (Works 10)
       digitalWrite(clockPin, LOW);
-      delay(1); //works at 10
+      delay(1); //1
 
     // Reset LEDs for next character
       digitalWrite(shiftPin, LOW);
       digitalWrite(special, LOW);
       for (int i = 0; i < 5; i++) {
         digitalWrite(ledPins[i], LOW);
+        delay(2);//slows loop, 2
       }
-      delay(10);// was 10
+      delay(10);//10
     } //end of string[n] loop
       // 'n' is at the end of the string, no more letters left to display. 
      // End-of-message indicator: All LEDs on for a clock flash
+     //delay(5);//didn't exist before
     for (int i = 0; i < 5; i++) {
       digitalWrite(ledPins[i], HIGH);
     }
