@@ -66,13 +66,13 @@ if(binaryValue == 31 && isShift && isSpecial){
 char decodeSpecialCharacter(int binaryValue, bool isShift) {
   if (isShift) {
     switch (binaryValue) {
-      case 32: return '[';
-      case 33: return ']';
-      case 34: return '{';
-      case 35: return '}';
-      case 36: return '<';
-      case 37: return '>';
-      case 38: return '_';
+      case 33: return '[';//32
+      case 34: return ']';
+      case 35: return '{';
+      case 36: return '}';
+      case 37: return '<';
+      case 38: return '>';//37
+      case 39: return '_';
       default: return ' ';
     }
   } else {
