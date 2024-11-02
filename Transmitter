@@ -34,13 +34,19 @@ void setup() {
 
 void loop(){
  if(Serial.available()){//check if serial is available
-  inputString = Serial.readString();//read text string and store as input string
-  Serial.print("Message Recieved as: ");
-  Serial.println(inputString);
+  //inputString = Serial.readString();//read text string and store as input string
+  //Serial.print("Message Recieved as: ");
+  //Serial.println(inputString);
+for(int n; n<500; ){
+string1 += inputString[n];
+}
+if(n<inputString.length()){
+// inputString2
+}
 
     //loop thru string at n
-    for (n = 0; n < (inputString.length()); n++) {//length()-1
-      currentLetter = inputString.charAt(n); // get the character at position n
+    for (x = 0; x < (inputString.length()); x++) {//length()-1
+      currentLetter = inputString.charAt(x); // get the character at position n
 
 
       //Serial.println(currentLetter);
