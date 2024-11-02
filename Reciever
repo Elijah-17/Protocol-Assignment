@@ -5,7 +5,7 @@ const int clocksens = A7; // Photoresistor for clock light
 String receivedMessage = ""; // Store the decoded message
 
 void setup() {
-  Serial.begin(9600); // Initialize serial communication
+  Serial.begin(115200); // Initialize serial communication
   while (!Serial);    // Wait for serial connection to initialize
   Serial.println("Receiver Ready");
   pinMode(clocksens, INPUT); // Clock light input
