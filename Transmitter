@@ -12,7 +12,7 @@ int specialChar = 0;  //variable to indicare number or special charecter
 
 
 void setup() {
-  Serial.begin(9600);  // initialize serial communication
+  Serial.begin(115200);  // initialize serial communication
   while (!Serial);     // wait for the serial connection to initialize
 
 
